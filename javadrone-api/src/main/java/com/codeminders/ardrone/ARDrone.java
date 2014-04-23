@@ -29,6 +29,7 @@ import com.codeminders.ardrone.data.ARDroneDataReader;
 import com.codeminders.ardrone.data.ChannelProcessor;
 import com.codeminders.ardrone.data.decoder.ardrone10.ARDrone10NavDataDecoder;
 import com.codeminders.ardrone.data.decoder.ardrone10.ARDrone10VideoDataDecoder;
+import com.codeminders.ardrone.data.decoder.ardrone20.ARDrone20NavDataDecoder;
 import com.codeminders.ardrone.data.logger.ARDroneDataReaderAndLogWrapper;
 import com.codeminders.ardrone.data.logger.DataLogger;
 import com.codeminders.ardrone.data.navdata.FlyingState;
@@ -342,10 +343,16 @@ public class ARDrone
             enableVideo();
             enableAutomaticVideoBitrate();
 
-            NavDataDecoder nav_data_decoder = (null == ext_nav_data_decoder) ?
-                    new  ARDrone10NavDataDecoder(this, NAVDATA_BUFFER_SIZE)
-                    :
-                    ext_nav_data_decoder;
+            
+                       
+            NavDataDecoder nav_data_decoder;
+            if(ext_nav_data_decoder != null ) {
+            	nav_data_decoder = ext_nav_data_decoder; 
+            } else if (version == 2) {
+            	nav_data_decoder = new  ARDrone20NavDataDecoder(this, NAVDATA_BUFFER_SIZE);
+            } else {
+            	nav_data_decoder = new  ARDrone10NavDataDecoder(this, NAVDATA_BUFFER_SIZE);
+            }
                     
             ARDroneDataReader nav_data_reader = (null == navdataLogger) ? 
                     new LigthUDPDataReader(drone_addr, NAVDATA_PORT, navDataReconnectTimeout) 
