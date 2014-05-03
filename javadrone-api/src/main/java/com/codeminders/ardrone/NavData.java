@@ -113,5 +113,7 @@ public interface NavData {
     public abstract FlyingState getFlyingState();
 
     public abstract List<VisionTag> getVisionTags();
+    
+    public abstract String getState();
 
 }

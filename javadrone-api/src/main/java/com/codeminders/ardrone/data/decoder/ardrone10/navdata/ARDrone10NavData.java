@@ -512,7 +512,7 @@ public class ARDrone10NavData implements NavData
         data.emergency = (state & (1 << 31)) != 0;
     }
 
-    public void printState()
+    public String getState()
     {
         StringBuffer sb = new StringBuffer();
 
@@ -558,6 +558,10 @@ public class ARDrone10NavData implements NavData
         sb.append("Z velocity: " + this.getVz() + "\n");
         sb.append("Vision Tags: " + this.getVisionTags() + "\n");
 
-        log.fine("State: " + sb.toString());
+        return sb.toString();
+    }
+    
+    public void printState() {
+    	log.fine("State: " + getState());
     }
 }
